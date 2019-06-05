@@ -12,49 +12,40 @@
         <div class="small-6 columns">
             <h1 class="text-center">YOU</h1>
             <div class="healthbar">
-                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white" :style="yourStyles">
-                    {{ yourHealth }}
+                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white" :style="{ width: playerHealth + '%' }">
+                    {{ playerHealth }}
                 </div>
             </div>
         </div>
         <div class="small-6 columns">
             <h1 class="text-center">MONSTER</h1>
             <div class="healthbar">
-                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white" :style="monsterStyles">
+                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white" :style="{ width: monsterHealth + '%' }">
                     {{ monsterHealth }}
                 </div>
             </div>
         </div>
     </section>
-    <section class="row controls" v-if="!inGame">
+    <section class="row controls" v-if="!gameIsRunning">
         <div class="small-12 columns">
-            <button id="start-game" @click="inGame = true">START NEW GAME</button>
+            <button id="start-game" @click="startGame">START NEW GAME</button>
         </div>
     </section>
-    <section class="row controls" v-else="inGame">
+    <section class="row controls" v-else>
         <div class="small-12 columns">
             <button id="attack" @click="attack()">ATTACK</button>
-            <button id="special-attack" @click="attack(5)">SPECIAL ATTACK</button>
+            <button id="special-attack" @click="specialAttack()">SPECIAL ATTACK</button>
             <button id="heal" @click="heal()">HEAL</button>
-            <button id="give-up" @click="inGame = false">GIVE UP</button>
+            <button id="give-up" @click="giveUp()">GIVE UP</button>
         </div>
     </section>
-    <section class="row log">
+    <section class="row log" v-if="turns.length > 0">
         <div class="small-12 columns">
             <ul>
-                <template v-for="(log, name) in gameLog">
-                    <template v-if="name == 'playerLog'">
-                        <li class="player-turn">
-                            PLAYER HEALS FOR {{ log }}
-                        </li>
-                    </template>
-                    <template v-else>
-                        <li class="monster-turn">
-                            MONSTER HITS PLAYER FOR {{ log }}
-                        </li>
-                    </template>
-                </template>
-
+                <li v-for="turn in turns"
+                    :class="{'player-turn' : turn.isPlayer, 'monster-turn' : !turn.isPlayer}">
+                    {{ turn.text }}
+                </li>
             </ul>
         </div>
     </section>
