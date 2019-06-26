@@ -5,6 +5,7 @@ new Vue ({
         monsterHealth: 100,
         gameIsRunning: false,
         turns: [],
+        idCounter: 0
     },
     methods: {
         attack: function() {
@@ -12,7 +13,8 @@ new Vue ({
             this.monsterHealth -= damage;
             this.turns.unshift({
                 isPlayer: true,
-                text: 'Player hits Monster for ' + damage
+                text: 'Player hits Monster for ' + damage,
+                id: this.idCounter++
             });
             if (this.checkWin()) {
                 return;
@@ -24,7 +26,8 @@ new Vue ({
             this.monsterHealth -= damage;
             this.turns.unshift({
                 isPlayer: true,
-                text: 'Player hits Monster for ' + damage
+                text: 'Player hits Monster for ' + damage,
+                id: this.idCounter++
             });
             if (this.checkWin()) {
                 return;
@@ -39,7 +42,8 @@ new Vue ({
             }
             this.turns.unshift({
                 isPlayer: true,
-                text: 'Player heals for  ' + 10
+                text: 'Player heals for  ' + 10,
+                id: this.idCounter++
             });
             this.monsterAttacks();
         },
@@ -58,7 +62,8 @@ new Vue ({
             this.checkWin();
             this.turns.unshift({
                 isMonster: true,
-                text: 'Monster hits Player for ' + damage
+                text: 'Monster hits Player for ' + damage,
+                id: this.idCounter++
             });
         },
 

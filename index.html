@@ -42,15 +42,39 @@
     <section class="row log" v-if="turns.length > 0">
         <div class="small-12 columns">
             <ul>
-                <li v-for="turn in turns"
-                    :class="{'player-turn' : turn.isPlayer, 'monster-turn' : !turn.isPlayer}">
-                    {{ turn.text }}
-                </li>
+                <transition-group name="slide">
+                    <li v-for="turn in turns"
+                        :class="{'player-turn' : turn.isPlayer, 'monster-turn' : !turn.isPlayer}"
+                        :key="turn.id">{{ turn.text }}
+                    </li>
+                </transition-group>
             </ul>
         </div>
     </section>
 </div>
 
+<style>
+    .slide-enter {
+        opacity: 0;
+        /*transform: translateX(-20px);*/
+    }
+    .slide-enter-active {
+        animation: slide-in 1s ease-out forwards;
+        transition: opacity 1s;
+    }
+    .slide-move {
+        transition: all 1s;
+    }
+
+    @keyframes slide-in {
+        from {
+            transform: translateY(-30px);
+        }
+        to {
+            transform: translateY(0px);
+        }
+    }
+</style>
 <script src="./js/app.js"></script>
 </body>
 </html>
